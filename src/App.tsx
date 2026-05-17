@@ -79,6 +79,18 @@ function AppContent() {
     }
   }, [user]);
 
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.has('calendar_success')) {
+      showToast('Google Calendar connected successfully!', 'success');
+      navigate(location.pathname, { replace: true });
+    } else if (params.has('calendar_error')) {
+      const error = params.get('calendar_error');
+      showToast(`Calendar sync failed: ${error}`, 'error');
+      navigate(location.pathname, { replace: true });
+    }
+  }, [location, navigate]);
+
   const handleAuthSuccess = (role: Role, name?: string, email?: string) => {
     const mockUser = MOCK_USERS.find(u => u.role === role) || MOCK_USERS[0];
     const newUser = {

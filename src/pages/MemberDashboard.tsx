@@ -14,13 +14,15 @@ import {
 import { Card, Badge, Button, cn } from '../components/UI';
 import { MOCK_PROJECTS, MOCK_TASKS, MOCK_USERS } from '../data';
 import { ProgressRing } from '../components/DashboardComponents';
-import { motion } from 'motion/react';
+import { SyncCalendarModal } from '../components/Modals';
+import { motion, AnimatePresence } from 'motion/react';
 import confetti from 'canvas-confetti';
 
 export const MemberDashboard = ({ user }: { user: any }) => {
   const myTasks = MOCK_TASKS.filter(t => t.assigneeId === user.id);
   const myProjects = MOCK_PROJECTS.filter(p => p.memberIds.includes(user.id));
   const overdueCount = myTasks.filter(t => t.status !== 'DONE' && new Date(t.dueDate) < new Date()).length;
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
   const handleUpdateClick = () => {
     confetti({
@@ -166,7 +168,13 @@ export const MemberDashboard = ({ user }: { user: any }) => {
            <Card className="p-8 dark:bg-slate-900/40">
               <div className="flex items-center justify-between mb-8">
                  <h3 className="text-lg font-display font-bold text-slate-900 dark:text-white">Upcoming Deadlines</h3>
-                 <Calendar size={18} className="text-slate-400" />
+                 <button 
+                  onClick={() => setIsCalendarOpen(true)}
+                  className="flex items-center gap-2 text-brand-primary hover:text-brand-secondary transition-colors group"
+                 >
+                    <span className="text-[10px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">Sync Calendar</span>
+                    <Calendar size={18} className="text-slate-400 group-hover:text-brand-primary transition-colors" />
+                 </button>
               </div>
               <div className="space-y-6 text-left">
                  {myTasks.slice(0, 4).map((task, i) => (
@@ -233,6 +241,22 @@ export const MemberDashboard = ({ user }: { user: any }) => {
            </Card>
         </div>
       </div>
+
+      <AnimatePresence>
+        {isCalendarOpen && (
+          <SyncCalendarModal 
+            isOpen={isCalendarOpen} 
+            onClose={() => setIsCalendarOpen(false)} 
+            deadlines={myTasks.map(t => ({
+              title: t.title,
+              dueDate: t.dueDate,
+              project: MOCK_PROJECTS.find(p => p.id === t.projectId)?.name || 'General',
+              priority: t.priority,
+              status: t.status
+            }))}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };

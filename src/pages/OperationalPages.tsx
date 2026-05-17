@@ -36,7 +36,7 @@ export const TeamPage = ({ role, onBack, onInviteTrigger }: { role: string, onBa
     if (deleteUserId) {
       setUsers(users.filter((u: any) => u.id !== deleteUserId));
       setDeleteUserId(null);
-      setToast('Member frequency dissolved from grid.');
+      setToast('Member removed successfully.');
     }
   };
 
@@ -52,7 +52,7 @@ export const TeamPage = ({ role, onBack, onInviteTrigger }: { role: string, onBa
         isOpen={!!deleteUserId} 
         onClose={() => setDeleteUserId(null)} 
         onConfirm={handleDelete}
-        title="Dissolve Member Node?"
+        title="Remove Team Member?"
       />
 
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">

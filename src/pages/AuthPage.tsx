@@ -315,7 +315,7 @@ export const AuthPage = ({ type, onAuthSuccess, onToggleType }: AuthPageProps) =
               className="w-full py-4 text-base rounded-2xl gap-2 mt-4"
               isLoading={isLoading}
             >
-              {type === 'LOGIN' ? 'Synchronize Session' : 'Create Ecosystem'}
+              {type === 'LOGIN' ? 'Sign In' : 'Create Account'}
               <ArrowRight size={20} />
             </Button>
 
@@ -325,8 +325,8 @@ export const AuthPage = ({ type, onAuthSuccess, onToggleType }: AuthPageProps) =
                 onClick={onToggleType}
                 className="text-sm font-medium text-slate-500 hover:text-brand-primary transition-colors flex items-center justify-center gap-1 mx-auto"
               >
-                {type === 'LOGIN' ? "Don't have a presence yet?" : "Already part of a frequency?"}
-                <span className="font-bold text-brand-primary">{type === 'LOGIN' ? 'Forge Signup' : 'Return to Login'}</span>
+                {type === 'LOGIN' ? "Don’t have an account?" : "Already have an account?"}
+                <span className="font-bold text-brand-primary">{type === 'LOGIN' ? 'Sign up' : 'Return to Login'}</span>
               </button>
             </div>
           </form>
@@ -336,11 +336,11 @@ export const AuthPage = ({ type, onAuthSuccess, onToggleType }: AuthPageProps) =
         <div className="mt-8 flex items-center justify-center gap-8 text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">
           <div className="flex items-center gap-2">
             <ShieldCheck size={14} className="text-emerald-500" />
-            <span>Biometric Ready</span>
+            <span>Secure Login</span>
           </div>
           <div className="flex items-center gap-2">
             <Zap size={14} className="text-brand-accent ripple" />
-            <span>Encrypted Pulse</span>
+            <span>Protected Session</span>
           </div>
         </div>
       </motion.div>

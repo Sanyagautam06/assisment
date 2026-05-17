@@ -14,6 +14,10 @@ CREATE TABLE IF NOT EXISTS public.users (
     tasks_completed INTEGER DEFAULT 0,
     active_tasks INTEGER DEFAULT 0,
     streak INTEGER DEFAULT 0,
+    google_access_token TEXT,
+    google_refresh_token TEXT,
+    google_token_expiry TIMESTAMP WITH TIME ZONE,
+    google_calendar_connected BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
@@ -81,6 +85,19 @@ CREATE TABLE IF NOT EXISTS public.activities (
     timestamp TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- INVITATIONS TABLE
+CREATE TABLE IF NOT EXISTS public.invitations (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    email TEXT NOT NULL UNIQUE,
+    name TEXT NOT NULL,
+    role TEXT NOT NULL DEFAULT 'MEMBER',
+    project TEXT,
+    status TEXT NOT NULL DEFAULT 'pending',
+    invited_by UUID REFERENCES public.users(id) ON DELETE SET NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    accepted_at TIMESTAMP WITH TIME ZONE
+);
+
 -- RLS (Row Level Security) Policies Setup
 ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.projects ENABLE ROW LEVEL SECURITY;
@@ -89,6 +106,7 @@ ALTER TABLE public.tasks ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.subtasks ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.notes ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.activities ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.invitations ENABLE ROW LEVEL SECURITY;
 
 -- Basic Policies (Can be restricted further)
 CREATE POLICY "Users can read all users" ON public.users FOR SELECT USING (true);
@@ -105,6 +123,10 @@ CREATE POLICY "Users can update tasks" ON public.tasks FOR UPDATE USING (auth.ui
 CREATE POLICY "Users can read subtasks" ON public.subtasks FOR SELECT USING (true);
 CREATE POLICY "Users can insert subtasks" ON public.subtasks FOR INSERT WITH CHECK (auth.uid() IS NOT NULL);
 CREATE POLICY "Users can update subtasks" ON public.subtasks FOR UPDATE USING (auth.uid() IS NOT NULL);
+
+CREATE POLICY "Users can read invitations" ON public.invitations FOR SELECT USING (true);
+CREATE POLICY "Users can insert invitations" ON public.invitations FOR INSERT WITH CHECK (auth.uid() IS NOT NULL);
+CREATE POLICY "Users can update invitations" ON public.invitations FOR UPDATE USING (auth.uid() IS NOT NULL);
 
 -- Create a trigger to automatically create a profile when a new user signs up in Supabase Auth
 CREATE OR REPLACE FUNCTION public.handle_new_user()

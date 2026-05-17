@@ -36,32 +36,135 @@ import {
   Area
 } from 'recharts';
 
-const MOCK_BAR_DATA = [
-  { name: 'Mon', completed: 12, pending: 4 },
-  { name: 'Tue', completed: 18, pending: 6 },
-  { name: 'Wed', completed: 15, pending: 8 },
-  { name: 'Thu', completed: 22, pending: 5 },
-  { name: 'Fri', completed: 30, pending: 3 },
-  { name: 'Sat', completed: 10, pending: 2 },
-  { name: 'Sun', completed: 8, pending: 1 },
-];
-
-const MOCK_PIE_DATA = [
-  { name: 'Done', value: 45, color: '#10b981' },
-  { name: 'In Progress', value: 30, color: '#6366f1' },
-  { name: 'Backlog', value: 15, color: '#f59e0b' },
-  { name: 'Blocked', value: 10, color: '#ef4444' },
-];
-
-const HEALTH_NODES = [
-  { name: 'Stellar Alpha', health: 94, trend: '+1.2%', status: 'optimal' },
-  { name: 'Nebula Genesis', health: 82, trend: '-3.4%', status: 'monitoring' },
-  { name: 'Quasar Flux', health: 91, trend: '+0.5%', status: 'optimal' },
-  { name: 'Void Core', health: 68, trend: '+12.1%', status: 'intervention' },
-];
+const analyticsData = {
+  '24h': {
+    totalTasks: 8,
+    completedTasks: 3,
+    overdueTasks: 1,
+    inProgressTasks: 4,
+    projectProgress: 42,
+    completionRate: '37.5%',
+    activeProjects: 3,
+    avgTimePerTask: '0.8h',
+    blockedTasks: 1,
+    completionTrend: '+2.1%',
+    activeProjectsTrend: '+0',
+    avgTimeTrend: '-5%',
+    blockedTrend: 'stable',
+    barData: [
+      { name: '00:00', completed: 0, pending: 1 },
+      { name: '04:00', completed: 0, pending: 0 },
+      { name: '08:00', completed: 1, pending: 1 },
+      { name: '12:00', completed: 1, pending: 1 },
+      { name: '16:00', completed: 1, pending: 1 },
+      { name: '20:00', completed: 0, pending: 0 },
+    ],
+    pieData: [
+      { name: 'Done', value: 37, color: '#10b981' },
+      { name: 'In Progress', value: 50, color: '#6366f1' },
+      { name: 'Backlog', value: 0, color: '#f59e0b' },
+      { name: 'Blocked', value: 13, color: '#ef4444' },
+    ],
+    healthNodes: [
+      { name: 'Stellar Alpha', health: 42, trend: '+5.2%', status: 'monitoring' },
+      { name: 'Nebula Genesis', health: 38, trend: '-2.4%', status: 'intervention' },
+    ],
+    activity: [
+      { user: 'Sarah S.', action: 'Completed task #402', time: '2m ago', type: 'archive' },
+      { user: 'Jason M.', action: 'Started task: Design Review', time: '14m ago', type: 'calib' },
+      { user: 'System', action: 'Hourly report generated', time: '1h ago', type: 'system' },
+    ]
+  },
+  '7d': {
+    totalTasks: 32,
+    completedTasks: 18,
+    overdueTasks: 4,
+    inProgressTasks: 10,
+    projectProgress: 61,
+    completionRate: '56.3%',
+    activeProjects: 8,
+    avgTimePerTask: '1.2h',
+    blockedTasks: 4,
+    completionTrend: '+4.2%',
+    activeProjectsTrend: '+2',
+    avgTimeTrend: '-12%',
+    blockedTrend: '+1',
+    barData: [
+      { name: 'Mon', completed: 12, pending: 4 },
+      { name: 'Tue', completed: 18, pending: 6 },
+      { name: 'Wed', completed: 15, pending: 8 },
+      { name: 'Thu', completed: 22, pending: 5 },
+      { name: 'Fri', completed: 30, pending: 3 },
+      { name: 'Sat', completed: 10, pending: 2 },
+      { name: 'Sun', completed: 8, pending: 1 },
+    ],
+    pieData: [
+      { name: 'Done', value: 56, color: '#10b981' },
+      { name: 'In Progress', value: 31, color: '#6366f1' },
+      { name: 'Backlog', value: 9, color: '#f59e0b' },
+      { name: 'Blocked', value: 4, color: '#ef4444' },
+    ],
+    healthNodes: [
+      { name: 'Stellar Alpha', health: 94, trend: '+1.2%', status: 'optimal' },
+      { name: 'Nebula Genesis', health: 82, trend: '-3.4%', status: 'monitoring' },
+      { name: 'Quasar Flux', health: 91, trend: '+0.5%', status: 'optimal' },
+      { name: 'Void Core', health: 68, trend: '+12.1%', status: 'intervention' },
+    ],
+    activity: [
+      { user: 'Sarah S.', action: 'Archived task #402', time: '2m ago', type: 'archive' },
+      { user: 'Jason M.', action: 'Created new project: Stellar Alpha', time: '14m ago', type: 'calib' },
+      { user: 'System', action: 'Weekly report generated', time: '1h ago', type: 'system' },
+      { user: 'Admin', action: 'New member invited', time: '3h ago', type: 'add' },
+      { user: 'Elena K.', action: 'Updated task status: Star Project', time: '5h ago', type: 'signal' },
+    ]
+  },
+  '30d': {
+    totalTasks: 120,
+    completedTasks: 86,
+    overdueTasks: 9,
+    inProgressTasks: 25,
+    projectProgress: 78,
+    completionRate: '71.7%',
+    activeProjects: 15,
+    avgTimePerTask: '1.5h',
+    blockedTasks: 9,
+    completionTrend: '+8.4%',
+    activeProjectsTrend: '+5',
+    avgTimeTrend: '-18%',
+    blockedTrend: '-2',
+    barData: [
+      { name: 'Week 1', completed: 28, pending: 12 },
+      { name: 'Week 2', completed: 35, pending: 10 },
+      { name: 'Week 3', completed: 42, pending: 8 },
+      { name: 'Week 4', completed: 48, pending: 6 },
+    ],
+    pieData: [
+      { name: 'Done', value: 72, color: '#10b981' },
+      { name: 'In Progress', value: 21, color: '#6366f1' },
+      { name: 'Backlog', value: 4, color: '#f59e0b' },
+      { name: 'Blocked', value: 3, color: '#ef4444' },
+    ],
+    healthNodes: [
+      { name: 'Stellar Alpha', health: 96, trend: '+2.1%', status: 'optimal' },
+      { name: 'Nebula Genesis', health: 88, trend: '+1.5%', status: 'optimal' },
+      { name: 'Quasar Flux', health: 93, trend: '+0.8%', status: 'optimal' },
+      { name: 'Void Core', health: 75, trend: '+8.2%', status: 'monitoring' },
+      { name: 'Nova Burst', health: 82, trend: '+4.3%', status: 'optimal' },
+    ],
+    activity: [
+      { user: 'Sarah S.', action: 'Archived task #402', time: '2m ago', type: 'archive' },
+      { user: 'Jason M.', action: 'Created new project: Stellar Alpha', time: '14m ago', type: 'calib' },
+      { user: 'System', action: 'Monthly report generated', time: '1h ago', type: 'system' },
+      { user: 'Admin', action: 'New member invited', time: '3h ago', type: 'add' },
+      { user: 'Elena K.', action: 'Updated task status: Star Project', time: '5h ago', type: 'signal' },
+      { user: 'Mike R.', action: 'Completed milestone: Phase 1', time: '1d ago', type: 'signal' },
+    ]
+  }
+};
 
 export const InsightsPage = ({ onExport }: { onExport?: () => void }) => {
   const [timeframe, setTimeframe] = useState('7d');
+  const currentData = analyticsData[timeframe as keyof typeof analyticsData];
 
   return (
     <div className="p-8 space-y-8 max-w-[1600px] mx-auto pb-24">
@@ -97,10 +200,10 @@ export const InsightsPage = ({ onExport }: { onExport?: () => void }) => {
       {/* Primary Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
          {[
-           { label: 'Completion Rate', value: '88.4%', trend: '+4.2%', icon: CheckCircle2, color: 'text-emerald-500' },
-           { label: 'Active Projects', value: '42', trend: '+12', icon: Activity, color: 'text-indigo-500' },
-           { label: 'Avg. Time per Task', value: '1.2h', trend: '-18%', icon: Clock, color: 'text-amber-500' },
-           { label: 'Blocked Tasks', value: '4', trend: 'stable', icon: AlertCircle, color: 'text-rose-500' },
+           { label: 'Completion Rate', value: currentData.completionRate, trend: currentData.completionTrend, icon: CheckCircle2, color: 'text-emerald-500' },
+           { label: 'Active Projects', value: currentData.activeProjects.toString(), trend: currentData.activeProjectsTrend, icon: Activity, color: 'text-indigo-500' },
+           { label: 'Avg. Time per Task', value: currentData.avgTimePerTask, trend: currentData.avgTimeTrend, icon: Clock, color: 'text-amber-500' },
+           { label: 'Blocked Tasks', value: currentData.blockedTasks.toString(), trend: currentData.blockedTrend, icon: AlertCircle, color: 'text-rose-500' },
          ].map((stat, i) => (
            <Card key={i} className="p-6 relative overflow-hidden group">
               <div className="flex justify-between items-start mb-4">
@@ -138,7 +241,7 @@ export const InsightsPage = ({ onExport }: { onExport?: () => void }) => {
             </div>
             <div className="h-[350px] w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={MOCK_BAR_DATA}>
+                <AreaChart data={currentData.barData}>
                   <defs>
                     <linearGradient id="colorComp" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3}/>
@@ -179,7 +282,7 @@ export const InsightsPage = ({ onExport }: { onExport?: () => void }) => {
                <ResponsiveContainer width="100%" height="100%">
                  <PieChart>
                    <Pie
-                     data={MOCK_PIE_DATA}
+                     data={currentData.pieData}
                      cx="50%"
                      cy="50%"
                      innerRadius={60}
@@ -187,7 +290,7 @@ export const InsightsPage = ({ onExport }: { onExport?: () => void }) => {
                      paddingAngle={8}
                      dataKey="value"
                    >
-                     {MOCK_PIE_DATA.map((entry, index) => (
+                     {currentData.pieData.map((entry, index) => (
                        <Cell key={`cell-${index}`} fill={entry.color} />
                      ))}
                    </Pie>
@@ -195,12 +298,12 @@ export const InsightsPage = ({ onExport }: { onExport?: () => void }) => {
                  </PieChart>
                </ResponsiveContainer>
                <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                  <span className="text-2xl font-bold dark:text-white">104</span>
+                  <span className="text-2xl font-bold dark:text-white">{currentData.totalTasks}</span>
                   <span className="text-[8px] uppercase font-bold tracking-widest text-slate-400">Total Tasks</span>
                </div>
             </div>
             <div className="space-y-3">
-               {MOCK_PIE_DATA.map((item, i) => (
+               {currentData.pieData.map((item, i) => (
                  <div key={i} className="flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
                     <div className="flex items-center gap-3">
                        <div className="w-2 h-2 rounded-full" style={{ backgroundColor: item.color }}></div>
@@ -218,7 +321,7 @@ export const InsightsPage = ({ onExport }: { onExport?: () => void }) => {
          <Card className="p-8">
             <h3 className="font-display font-bold uppercase tracking-tight italic mb-6">Project Progress</h3>
             <div className="space-y-4">
-              {HEALTH_NODES.map((node, i) => (
+              {currentData.healthNodes.map((node, i) => (
                 <div key={i} className="p-4 rounded-2xl border border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-white/5">
                    <div className="flex justify-between items-center mb-3">
                       <div className="flex flex-col">
@@ -252,13 +355,7 @@ export const InsightsPage = ({ onExport }: { onExport?: () => void }) => {
          <Card className="p-8">
             <h3 className="font-display font-bold uppercase tracking-tight italic mb-6">Recent Activity</h3>
             <div className="space-y-6">
-               {[
-                 { user: 'Sarah S.', action: 'Archived task #402', time: '2m ago', type: 'archive' },
-                 { user: 'Jason M.', action: 'Created new project: Stellar Alpha', time: '14m ago', type: 'calib' },
-                 { user: 'System', action: 'Weekly report generated', time: '1h ago', type: 'system' },
-                 { user: 'Admin', action: 'New member invited', time: '3h ago', type: 'add' },
-                 { user: 'Elena K.', action: 'Updated task status: Star Project', time: '5h ago', type: 'signal' },
-               ].map((act, i) => (
+               {currentData.activity.map((act, i) => (
                  <div key={i} className="flex gap-4 items-start group">
                     <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-white/5 border border-white/5 flex items-center justify-center shrink-0">
                        <div className="w-2 h-2 rounded-full bg-brand-primary animate-pulse"></div>
