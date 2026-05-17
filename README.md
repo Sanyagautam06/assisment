@@ -4,8 +4,6 @@
 
 Velora is a clean, efficient project management platform designed to help teams stay organized and productive. Built for speed, clarity, and high-performance collaboration.
 
-[![Live Demo](https://velora-production-e06b.up.railway.app/)
-]
 ## 🚀 Vision
 In an era of fragmented communication, Velora provides the tools to connect individual tasks to overall project health. Our dual-dashboard architecture ensures that Administrators maintain oversight while Team Members stay focused on their assigned tasks.
 
