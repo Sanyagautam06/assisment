@@ -20,7 +20,10 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: process.env.CLIENT_URL || 'http://localhost:3000',
+  credentials: true
+}));
 app.use(express.json());
 
 // Serve static files from the React app
@@ -250,8 +253,7 @@ app.delete('/api/calendar/disconnect', authMiddleware, async (req, res) => {
 
 
 // POST /api/team/invite - Send email invitation
-app.post('/api/team/invite', async (req, res) => {
-  try {
+app.post('/api/team/invite', authMiddleware, async (req, res) => {  try {
     const { name, email, role, project } = req.body;
 
     // Validate input
@@ -292,8 +294,14 @@ app.post('/api/team/invite', async (req, res) => {
     const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
     // IMPORTANT: Resend can block sending to other recipients unless your from-address is on a verified domain.
     // If you are currently in Resend "testing" mode, only your own email can be used.
-    const fromEmail = process.env.INVITE_FROM_EMAIL || 'sanyagautam06@gmail.com';
+const fromEmail = process.env.INVITE_FROM_EMAIL;
 
+if (!fromEmail) {
+   return res.status(500).json({
+      success:false,
+      error:'INVITE_FROM_EMAIL missing'
+   });
+}
 
     const emailResponse = await fetch('https://api.resend.com/emails', {
       method: 'POST',
