@@ -290,7 +290,10 @@ app.post('/api/team/invite', async (req, res) => {
     }
 
     const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
-    const fromEmail = process.env.INVITE_FROM_EMAIL || 'Velora <noreply@velora.app>';
+    // IMPORTANT: Resend can block sending to other recipients unless your from-address is on a verified domain.
+    // If you are currently in Resend "testing" mode, only your own email can be used.
+    const fromEmail = process.env.INVITE_FROM_EMAIL || 'sanyagautam06@gmail.com';
+
 
     const emailResponse = await fetch('https://api.resend.com/emails', {
       method: 'POST',
